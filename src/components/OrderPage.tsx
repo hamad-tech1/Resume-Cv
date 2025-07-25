@@ -172,12 +172,12 @@ export const OrderPage: React.FC = () => {
   };
 
   const generateResume = async (): Promise<UploadResponse> => {
-    const API_BASE_URL = 'https://c96c42b5f820.ngrok-free.app';
+    const API_BASE_URL = 'https://ai.cvaluepro.com/resume';
     
     // Health check first
     await axios.get(`${API_BASE_URL}/health-check`, {
       headers: {
-        'ngrok-skip-browser-warning': 'true',
+
         'Accept': 'application/json'
       },
       timeout: 10000
@@ -191,7 +191,7 @@ export const OrderPage: React.FC = () => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'multipart/form-data',
-        'ngrok-skip-browser-warning': 'true',
+      
       },
       timeout: 60000,
       onUploadProgress: (progressEvent) => {

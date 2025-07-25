@@ -493,7 +493,7 @@ export const PreviewPage: React.FC = () => {
   useEffect(() => {
     const downloadResumes = async () => {
       try {
-        const API_BASE_URL = "https://c96c42b5f820.ngrok-free.app"
+        const API_BASE_URL = "https://ai.cvaluepro.com/resume"
 
         // Download Classic Resume
         const classicResponse = await axios.get(
@@ -501,7 +501,7 @@ export const PreviewPage: React.FC = () => {
           {
             responseType: "blob",
             headers: {
-              "ngrok-skip-browser-warning": "true",
+            
               Accept: "application/pdf",
             },
           },
@@ -518,7 +518,7 @@ export const PreviewPage: React.FC = () => {
           {
             responseType: "blob",
             headers: {
-              "ngrok-skip-browser-warning": "true",
+            
               Accept: "application/pdf",
             },
           },
