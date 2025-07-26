@@ -347,139 +347,9 @@ export const PreviewPage: React.FC = () => {
   const [selectedResumeType, setSelectedResumeType] = useState<'classic' | 'modern'>('classic')
   const [paymentAmount] = useState(10) // Set your price here
 
-  // Screenshot and Screen Recording Protection
+  // Page initialization effect
   useEffect(() => {
-    // Add CSS to prevent screenshots and recordings
-    const style = document.createElement('style')
-    style.textContent = `
-      body {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        -webkit-touch-callout: none;
-        -webkit-tap-highlight-color: transparent;
-      }
-      
-      * {
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-        pointer-events: auto !important;
-      }
-      
-      img, video, iframe {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        pointer-events: none;
-      }
-      
-      @media print {
-        body { display: none !important; }
-      }
-    `
-    document.head.appendChild(style)
-
-    // Disable right-click context menu
-    const handleContextMenu = (e: MouseEvent) => {
-      e.preventDefault()
-      return false
-    }
-
-    // Disable key combinations for screenshots and dev tools
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+Shift+C, Ctrl+A, Ctrl+S, Ctrl+P
-      if (
-        e.key === 'F12' ||
-        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
-        (e.ctrlKey && (e.key === 'u' || e.key === 'U')) ||
-        (e.ctrlKey && (e.key === 'a' || e.key === 'A')) ||
-        (e.ctrlKey && (e.key === 's' || e.key === 'S')) ||
-        (e.ctrlKey && (e.key === 'p' || e.key === 'P')) ||
-        // Print Screen keys
-        e.key === 'PrintScreen' ||
-        // Windows + Shift + S (Snipping Tool)
-        (e.metaKey && e.shiftKey && e.key === 'S') ||
-        // Alt + PrintScreen
-        (e.altKey && e.key === 'PrintScreen')
-      ) {
-        e.preventDefault()
-        toast.error(language === 'ar' ? 'هذا الإجراء غير مسموح' : 'This action is not allowed')
-        return false
-      }
-    }
-
-    // Disable drag and drop
-    const handleDragStart = (e: DragEvent) => {
-      e.preventDefault()
-      return false
-    }
-
-    // Disable text selection
-    const handleSelectStart = (e: Event) => {
-      e.preventDefault()
-      return false
-    }
-
-    // Add event listeners
-    document.addEventListener('contextmenu', handleContextMenu)
-    document.addEventListener('keydown', handleKeyDown)
-    document.addEventListener('dragstart', handleDragStart)
-    document.addEventListener('selectstart', handleSelectStart)
-
-    // Disable print
-    window.addEventListener('beforeprint', (e) => {
-      e.preventDefault()
-      toast.error(language === 'ar' ? 'الطباعة غير مسموحة' : 'Printing is not allowed')
-      return false
-    })
-
-    // Blur page when window loses focus (prevents screen recording)
-    let blurTimeout: NodeJS.Timeout
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        document.body.style.filter = 'blur(10px)'
-        document.body.style.userSelect = 'none'
-      } else {
-        // Add small delay to prevent flashing
-        blurTimeout = setTimeout(() => {
-          document.body.style.filter = 'none'
-        }, 100)
-      }
-    }
-
-    const handleBlur = () => {
-      document.body.style.filter = 'blur(10px)'
-    }
-
-    const handleFocus = () => {
-      clearTimeout(blurTimeout)
-      blurTimeout = setTimeout(() => {
-        document.body.style.filter = 'none'
-      }, 100)
-    }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    window.addEventListener('blur', handleBlur)
-    window.addEventListener('focus', handleFocus)
-
-    // Cleanup function
-    return () => {
-      document.head.removeChild(style)
-      document.removeEventListener('contextmenu', handleContextMenu)
-      document.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('dragstart', handleDragStart)
-      document.removeEventListener('selectstart', handleSelectStart)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      window.removeEventListener('blur', handleBlur)
-      window.removeEventListener('focus', handleFocus)
-      clearTimeout(blurTimeout)
-      document.body.style.filter = 'none'
-    }
+    // Any necessary initialization can go here
   }, [language])
 
   // Redirect to home if no state is available
@@ -588,19 +458,11 @@ export const PreviewPage: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen transition-all duration-300 select-none ${
+      className={`min-h-screen transition-all duration-300 ${
         isDarkMode
           ? "bg-gradient-to-br from-black via-gray-900 to-black text-white"
           : "bg-gradient-to-br from-white via-gray-50 to-white text-black"
       } ${fontFamilyClass}`}
-      style={{
-        WebkitUserSelect: 'none',
-        MozUserSelect: 'none',
-        msUserSelect: 'none',
-        userSelect: 'none',
-        WebkitTouchCallout: 'none',
-        WebkitTapHighlightColor: 'transparent'
-      }}
     >
       <Header
         isDarkMode={isDarkMode}
@@ -714,7 +576,6 @@ export const PreviewPage: React.FC = () => {
                       src={classicPdfUrl} 
                       className="w-full h-full border-0" 
                       title="Classic Resume"
-                      style={{ pointerEvents: 'none', userSelect: 'none' }}
                     />
                   </div>
                 </div>
@@ -762,7 +623,6 @@ export const PreviewPage: React.FC = () => {
                       src={modernPdfUrl} 
                       className="w-full h-full border-0" 
                       title="Modern Resume"
-                      style={{ pointerEvents: 'none', userSelect: 'none' }}
                     />
                   </div>
                 </div>
@@ -771,60 +631,73 @@ export const PreviewPage: React.FC = () => {
 
             {/* Mobile/Tablet View - Tabbed Interface */}
             <div className="lg:hidden">
-              {/* Tab Buttons */}
-              <div className={`flex rounded-xl p-1 mb-6 ${isDarkMode ? "bg-gray-900" : "bg-gray-100"}`}>
+              {/* Tab buttons */}
+              <div className="flex rounded-lg overflow-hidden mb-6">
                 <button
                   onClick={() => setActivePreview("classic")}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+                  className={`flex-1 py-4 px-6 font-medium transition-all duration-200 ${
                     activePreview === "classic"
                       ? isDarkMode
-                        ? "bg-white text-black shadow-lg"
-                        : "bg-black text-white shadow-lg"
+                        ? "bg-gray-800 text-white"
+                        : "bg-black text-white"
                       : isDarkMode
-                        ? "text-gray-400 hover:text-white"
-                        : "text-gray-600 hover:text-black"
+                      ? "bg-gray-900/50 text-gray-400 hover:bg-gray-800/50"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
-                  <FileText className="w-4 h-4" />
-                  <span>{language === "ar" ? "كلاسيكي" : "Classic"}</span>
+                  <div className="flex items-center justify-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    <span>{language === "ar" ? "كلاسيكي" : "Classic"}</span>
+                  </div>
                 </button>
                 <button
                   onClick={() => setActivePreview("modern")}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+                  className={`flex-1 py-4 px-6 font-medium transition-all duration-200 ${
                     activePreview === "modern"
                       ? isDarkMode
-                        ? "bg-white text-black shadow-lg"
-                        : "bg-black text-white shadow-lg"
+                        ? "bg-gray-800 text-white"
+                        : "bg-black text-white"
                       : isDarkMode
-                        ? "text-gray-400 hover:text-white"
-                        : "text-gray-600 hover:text-black"
+                      ? "bg-gray-900/50 text-gray-400 hover:bg-gray-800/50"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
-                  <Sparkles className="w-4 h-4" />
-                  <span>{language === "ar" ? "عصري" : "Modern"}</span>
+                  <div className="flex items-center justify-center gap-2">
+                    <Sparkles className="w-4 h-4" />
+                    <span>{language === "ar" ? "عصري" : "Modern"}</span>
+                  </div>
                 </button>
               </div>
 
-              {/* Active Preview */}
+              {/* Active preview content */}
               <div
-                className={`rounded-2xl overflow-hidden ${
-                  isDarkMode ? "bg-gray-900/50 border border-gray-800" : "bg-white border border-gray-200 shadow-lg"
+                className={`group relative rounded-2xl overflow-hidden transition-all duration-300 ${
+                  isDarkMode
+                    ? "bg-gray-900/50 border border-gray-800"
+                    : "bg-white border border-gray-200 shadow-lg"
                 }`}
               >
                 <div className="p-6 pb-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-2xl font-bold">
-                      {activePreview === "classic"
-                        ? language === "ar"
-                          ? "النموذج الكلاسيكي"
-                          : "Classic Template"
-                        : language === "ar"
+                    <div className="flex items-center gap-3">
+                      {activePreview === "classic" ? (
+                        <FileText className="w-6 h-6" />
+                      ) : (
+                        <Sparkles className="w-6 h-6" />
+                      )}
+                      <h2 className="text-2xl font-bold">
+                        {activePreview === "classic"
+                          ? language === "ar"
+                            ? "النموذج الكلاسيكي"
+                            : "Classic Template"
+                          : language === "ar"
                           ? "النموذج العصري"
                           : "Modern Template"}
-                    </h2>
+                      </h2>
+                    </div>
                     <button
                       onClick={() => handleDownloadClick(activePreview)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 ${
+                      className={`flex items-center gap-2 px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 ${
                         isDarkMode ? "bg-white text-black hover:bg-gray-100" : "bg-black text-white hover:bg-gray-800"
                       }`}
                     >
@@ -838,26 +711,28 @@ export const PreviewPage: React.FC = () => {
                         ? "تصميم أنيق ومهني للوظائف التقليدية"
                         : "Clean and professional design for traditional roles"
                       : language === "ar"
-                        ? "تصميم معاصر وإبداعي للوظائف الحديثة"
-                        : "Contemporary and creative design for modern roles"}
+                      ? "تصميم معاصر وإبداعي للوظائف الحديثة"
+                      : "Contemporary and creative design for modern roles"}
                   </p>
                 </div>
                 <div className="px-6 pb-6">
                   <div
-                    className={`w-full h-[600px] rounded-xl overflow-hidden border-2 ${
-                      isDarkMode ? "border-gray-700" : "border-gray-200"
+                    className={`w-full h-[500px] rounded-xl overflow-hidden border-2 transition-all duration-300 ${
+                      isDarkMode
+                        ? "border-gray-700"
+                        : "border-gray-200"
                     }`}
                   >
-                    <iframe
-                      src={activePreview === "classic" ? classicPdfUrl : modernPdfUrl}
-                      className="w-full h-full border-0"
-                      title={`${activePreview} Resume`}
-                      style={{ pointerEvents: 'none', userSelect: 'none' }}
+                    <iframe 
+                      src={activePreview === "classic" ? classicPdfUrl : modernPdfUrl} 
+                      className="w-full h-full border-0" 
+                      title={`${activePreview === "classic" ? "Classic" : "Modern"} Resume`}
                     />
                   </div>
                 </div>
               </div>
             </div>
+            
           </div>
         )}
       </main>

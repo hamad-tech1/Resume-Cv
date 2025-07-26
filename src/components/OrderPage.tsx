@@ -335,11 +335,11 @@ export const OrderPage: React.FC = () => {
           </div>
 
           {/* Service Info */}
-          <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <div className="text-center">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6 ">
               {serviceContent.title}
             </h1>
-            <p className="text-lg opacity-80 max-w-3xl mx-auto">
+            <p className="text-lg opacity-80 max-w-3xl mx-auto mb-4">
               {serviceContent.description}
             </p>
           </div>
